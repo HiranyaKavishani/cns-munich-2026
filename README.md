@@ -30,14 +30,14 @@ The cost isn't the model — it's the non-deterministic loops, ungoverned traffi
 
 Single static file — no build step:
 
-\`\`\`bash
+```bash
 python3 -m http.server 8000
 # then visit http://localhost:8000
-\`\`\`
+```
 
 ## Deploying
 
-GitHub Pages: **Settings → Pages → Source: \`main\` branch / root**.
+GitHub Pages: **Settings → Pages → Source: `main` branch / root**.
 
 ---
 
