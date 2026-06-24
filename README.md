@@ -15,10 +15,10 @@ The cost isn't the model — it's the non-deterministic loops, ungoverned traffi
 
 ### Step 2 · Govern & route the traffic
 - **[WSO2 AI Gateway](https://wso2.com/api-platform/ai-gateway/)** — rate limits, token budgets, and routing at the edge, where runaway LLM cost is contained.
-- **[AI Workspace](https://wso2.com/api-platform/ai-workspace/)** — the control plane: set policy, see cost and usage before it's a bill.
+- **WSO2 [AI Workspace](https://wso2.com/api-platform/ai-workspace/)** — the control plane: set policy, see cost and usage before it's a bill.
 
 ### Step 3 · Scale it across many agents
-- **[WSO2 Agent Manager & Agent ID](https://wso2.com/about/news/wso2-launches-agent-manager/)** — the same pattern extended to a fleet, with identity and lifecycle for every agent.
+- **[WSO2 Agent Manager](https://wso2.com/about/news/wso2-launches-agent-manager/)** — the broader approach for scaling to many agents, leveraging the built-in AI Gateway and Agent ID so governance and identity hold across a whole fleet.
 
 ### More
 - 📊 **[Slides](https://hiranyakavishani.github.io/cns-munich-2026/slides.pdf)**
@@ -26,19 +26,4 @@ The cost isn't the model — it's the non-deterministic loops, ungoverned traffi
 
 ---
 
-## Running locally
-
-Single static file — no build step:
-
-```bash
-python3 -m http.server 8000
-# then visit http://localhost:8000
-```
-
-## Deploying
-
-GitHub Pages: **Settings → Pages → Source: `main` branch / root**.
-
----
-
-Built for the cloud native community by **Hiranya Abeyrathne**. Questions about AI gateways, agents, and keeping LLM cost under control? Find me on [LinkedIn](https://www.linkedin.com/in/hiranya-kavishani/) or email hiranyaa@wso2.com.
+_Page by **Hiranya Abeyrathne**, WSO2 · Cloud Native Summit Munich 2026_
