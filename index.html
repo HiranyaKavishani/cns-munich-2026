@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Why LLMs Get Expensive in Production — Resources</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0a0e14;
+    --panel:#11161f;
+    --line:#1f2733;
+    --fog:#8694a8;
+    --paper:#e8ecf2;
+    --signal:#3ddc97;
+    --signal-dim:#1f7a55;
+    --wire:#2a3645;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--ink);
+    color:var(--paper);
+    font-family:'Space Grotesk',system-ui,sans-serif;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+    background-image:
+      radial-gradient(circle at 1px 1px, var(--wire) 1px, transparent 0);
+    background-size:40px 40px;
+    background-attachment:fixed;
+  }
+  .wrap{max-width:720px;margin:0 auto;padding:64px 24px 96px}
+
+  /* header */
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    color:var(--signal);
+    display:flex;align-items:center;gap:10px;
+    margin-bottom:22px;
+  }
+  .eyebrow::before{
+    content:"";width:8px;height:8px;border-radius:50%;
+    background:var(--signal);
+    box-shadow:0 0 0 4px rgba(61,220,151,.15);
+    animation:pulse 2.4s ease-in-out infinite;
+  }
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+  h1{
+    font-size:clamp(34px,7vw,56px);
+    font-weight:700;
+    line-height:1.04;
+    letter-spacing:-0.02em;
+    margin-bottom:18px;
+  }
+  h1 .accent{color:var(--signal)}
+  .lede{
+    color:var(--fog);
+    font-size:17px;
+    max-width:54ch;
+    margin-bottom:14px;
+  }
+  .meta{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12.5px;
+    color:var(--wire);
+    border-top:1px solid var(--line);
+    margin-top:40px;padding-top:18px;
+  }
+
+  /* section label */
+  .sec-label{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;
+    letter-spacing:0.16em;
+    text-transform:uppercase;
+    color:var(--fog);
+    margin:56px 0 20px;
+    display:flex;align-items:baseline;gap:14px;
+  }
+  .sec-label .num{color:var(--signal-dim)}
+  .sec-label::after{content:"";flex:1;height:1px;background:var(--line)}
+
+  /* link cards */
+  .stack{display:flex;flex-direction:column;gap:14px}
+  .card{
+    display:block;
+    text-decoration:none;
+    color:inherit;
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:22px 24px;
+    position:relative;
+    transition:border-color .2s ease, transform .2s ease, background .2s ease;
+  }
+  .card::after{
+    content:"↗";
+    position:absolute;top:22px;right:24px;
+    font-family:'JetBrains Mono',monospace;
+    color:var(--wire);
+    transition:color .2s ease, transform .2s ease;
+  }
+  .card:hover{
+    border-color:var(--signal-dim);
+    transform:translateX(4px);
+    background:#141b26;
+  }
+  .card:hover::after{color:var(--signal);transform:translate(2px,-2px)}
+  .card:focus-visible{outline:2px solid var(--signal);outline-offset:3px}
+  .card .tag{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color:var(--signal);
+    margin-bottom:9px;display:block;
+  }
+  .card .title{font-size:18px;font-weight:600;margin-bottom:6px;padding-right:24px}
+  .card .desc{color:var(--fog);font-size:14px;padding-right:24px}
+  .card .url{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11.5px;color:var(--wire);
+    margin-top:12px;word-break:break-all;
+  }
+
+  /* nested pair */
+  .pair{display:flex;flex-direction:column;gap:14px}
+  @media(min-width:560px){.pair{flex-direction:row}.pair .card{flex:1}}
+
+  /* footer contact row */
+  .contact{display:flex;flex-wrap:wrap;gap:14px;margin-top:4px}
+  .contact .card{flex:1;min-width:200px}
+
+  footer{
+    margin-top:64px;padding-top:24px;
+    border-top:1px solid var(--line);
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;color:var(--wire);
+    display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media(prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="eyebrow">Resources &amp; Reference Architecture</div>
+  <h1>Why LLMs Get <span class="accent">Expensive</span> in Production</h1>
+  <p class="lede">And how a control-plane architecture fixes it. The cost isn't the model — it's the non-deterministic loops, ungoverned traffic, and missing observability around it. The fix: push deterministic work into workflows, expose them as tools, and route everything through a gateway that enforces limits.</p>
+  <p class="lede" style="color:var(--wire);font-size:14px;">Every resource below maps to one part of that fix. Tap a card to open it.</p>
+
+  <!-- 01 -->
+  <div class="sec-label"><span class="num">Step 1</span> Make the Work Deterministic</div>
+  <div class="stack">
+    <a class="card" href="https://wso2.com/api-platform/docs/tools/arazzo-mcp-gen-cli/quick-start-guide/" target="_blank" rel="noopener">
+      <span class="tag">CLI · Arazzo → MCP</span>
+      <div class="title">Arazzo Workflows, Wrapped as an MCP Tool</div>
+      <div class="desc">Design business tasks as deterministic Arazzo workflows — no tokens, no model reasoning — then expose them to the LLM as a single MCP tool. The expensive agent loop calls one tool instead of improvising the whole sequence.</div>
+      <div class="url">wso2.com/api-platform/docs/tools/arazzo-mcp-gen-cli/quick-start-guide</div>
+    </a>
+  </div>
+
+  <!-- 02 -->
+  <div class="sec-label"><span class="num">Step 2</span> Govern &amp; Route the Traffic</div>
+  <div class="pair">
+    <a class="card" href="https://wso2.com/api-platform/ai-gateway/" target="_blank" rel="noopener">
+      <span class="tag">Data Plane</span>
+      <div class="title">WSO2 AI Gateway</div>
+      <div class="desc">Rate limits, token budgets, and routing at the edge — where runaway LLM cost is actually contained.</div>
+      <div class="url">wso2.com/api-platform/ai-gateway</div>
+    </a>
+    <a class="card" href="https://wso2.com/api-platform/ai-workspace/" target="_blank" rel="noopener">
+      <span class="tag">Control Plane</span>
+      <div class="title">AI Workspace</div>
+      <div class="desc">Where you set policy and see cost &amp; usage — the observability that makes spend visible before it's a bill.</div>
+      <div class="url">wso2.com/api-platform/ai-workspace</div>
+    </a>
+  </div>
+
+  <!-- 03 -->
+  <div class="sec-label"><span class="num">Step 3</span> Scale It Across Many Agents</div>
+  <div class="stack">
+    <a class="card" href="https://wso2.com/about/news/wso2-launches-agent-manager/" target="_blank" rel="noopener">
+      <span class="tag">Announcement</span>
+      <div class="title">WSO2 Agent Manager &amp; Agent ID</div>
+      <div class="desc">The control-plane pattern, extended to a fleet: identity and lifecycle for every agent, so cost and governance hold as you go from one agent to many.</div>
+      <div class="url">wso2.com/about/news/wso2-launches-agent-manager</div>
+    </a>
+  </div>
+
+  <!-- 04 -->
+  <div class="sec-label"><span class="num">04</span> More</div>
+  <div class="contact">
+    <a class="card" href="https://hiranyakavishani.github.io/cns-munich-2026/slides.pdf" target="_blank" rel="noopener">
+      <span class="tag">Deck</span>
+      <div class="title">Slides</div>
+      <div class="url">slides.pdf</div>
+    </a>
+    <a class="card" href="https://www.linkedin.com/in/hiranya-kavishani/" target="_blank" rel="noopener">
+      <span class="tag">Connect</span>
+      <div class="title">Hiranya Abeyrathne · LinkedIn</div>
+      <div class="desc">hiranyaa@wso2.com</div>
+      <div class="url">linkedin.com/in/hiranya-kavishani</div>
+    </a>
+  </div>
+
+  <footer>
+    <span>Hiranya Abeyrathne</span>
+    <span>CNS Munich 2026</span>
+  </footer>
+
+</div>
+</body>
+</html>
