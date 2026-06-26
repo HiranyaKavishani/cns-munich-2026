@@ -144,6 +144,19 @@
     display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
   }
 
+  /* featured capstone card */
+  .card.feature{
+    border-color:var(--signal-dim);
+    background:linear-gradient(135deg,#13211a,#11161f 60%);
+    box-shadow:0 0 0 1px rgba(61,220,151,.12), 0 0 40px -12px rgba(61,220,151,.25);
+  }
+  .card.feature:hover{
+    border-color:var(--signal);
+    background:linear-gradient(135deg,#163026,#141b26 60%);
+  }
+  .card.feature .tag{color:var(--signal)}
+  .card.feature .title{font-size:21px}
+
   @media(prefers-reduced-motion:reduce){
     *{animation:none!important;transition:none!important}
   }
@@ -191,8 +204,14 @@
     <a class="card" href="https://wso2.com/about/news/wso2-launches-agent-manager/" target="_blank" rel="noopener">
       <span class="tag">At Scale</span>
       <div class="title">WSO2 Agent Manager</div>
-      <div class="desc">The broader approach for scaling to many agents — Agent Manager leverages the built-in AI Gateway and Agent ID together, so governance and identity hold across a whole fleet, not just one agent.</div>
+      <div class="desc">The broader approach for scaling to many agents — leverages the built-in AI Gateway and Agent ID together, so governance and identity hold across a whole fleet, not just one agent.</div>
       <div class="url">wso2.com/about/news/wso2-launches-agent-manager</div>
+    </a>
+    <a class="card feature" href="https://wso2.com/agent-platform/" target="_blank" rel="noopener">
+      <span class="tag">★ The Full Platform</span>
+      <div class="title">WSO2 Agent Platform</div>
+      <div class="desc">The umbrella that brings everything above together — the gateway, control plane, MCP tooling, and Agent Manager as one platform. Start here for the complete picture.</div>
+      <div class="url">wso2.com/agent-platform</div>
     </a>
   </div>
 
